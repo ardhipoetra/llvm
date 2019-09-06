@@ -118,6 +118,11 @@ public:
     return addReg(RegNo, Flags, SubReg);
   }
 
+  const MachineInstrBuilder &addOperandDef(const MachineOperand &MO) const {
+    MI->addOperand(MO);
+    return *this;
+   }
+
   /// Add a new immediate operand.
   const MachineInstrBuilder &addImm(int64_t Val) const {
     MI->addOperand(*MF, MachineOperand::CreateImm(Val));
