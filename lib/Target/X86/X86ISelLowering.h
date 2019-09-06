@@ -80,7 +80,9 @@ namespace llvm {
       /// X86 compare and logical compare instructions.
       CMP, COMI, UCOMI,
 
-      /// X86 bit-test instructions.
+      SWIFTCMP,
+
+        /// X86 bit-test instructions.
       BT,
 
       /// X86 SetCC. Operand 0 is condition code, and operand 1 is the EFLAGS

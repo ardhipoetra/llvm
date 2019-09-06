@@ -144,6 +144,8 @@ def X86shrd    : SDNode<"X86ISD::SHRD",     SDTIntShiftDOp>;
 def X86cmp     : SDNode<"X86ISD::CMP" ,     SDTX86CmpTest>;
 def X86bt      : SDNode<"X86ISD::BT",       SDTX86CmpTest>;
 
+def X86swiftcmp : SDNode<"X86ISD::SWIFTCMP", SDTX86CmpTest>;
+
 def X86cmov    : SDNode<"X86ISD::CMOV",     SDTX86Cmov>;
 def X86brcond  : SDNode<"X86ISD::BRCOND",   SDTX86BrCond,
                         [SDNPHasChain]>;
@@ -3007,6 +3009,8 @@ include "X86InstrSystem.td"
 // Compiler Pseudo Instructions and Pat Patterns
 include "X86InstrCompiler.td"
 include "X86InstrVecCompiler.td"
+
+include "X86InstrSwift.td"
 
 //===----------------------------------------------------------------------===//
 // Assembler Mnemonic Aliases

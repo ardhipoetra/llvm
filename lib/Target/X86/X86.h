@@ -129,6 +129,10 @@ InstructionSelector *createX86InstructionSelector(const X86TargetMachine &TM,
 
 FunctionPass *createX86SpeculativeLoadHardeningPass();
 
+/// Return a pass that replaces "swiftmov" pseudoinsts with normal "mov"s.
+FunctionPass *createX86ReplaceSwift();
+
+
 void initializeEvexToVexInstPassPass(PassRegistry &);
 void initializeFixupBWInstPassPass(PassRegistry &);
 void initializeFixupLEAPassPass(PassRegistry &);
