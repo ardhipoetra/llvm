@@ -32,7 +32,7 @@ namespace {
 class ReplaceSwiftPass : public MachineFunctionPass {
   static char ID;
 
-//  const char *getPassName() const override { return "X86 Replacement of SWIFT pseudo-instructions"; }
+  StringRef getPassName() const override { return "X86 Replacement of SWIFT pseudo-instructions"; }
 
 public:
   ReplaceSwiftPass();
@@ -131,9 +131,9 @@ bool ReplaceSwiftPass::processInstruction(MachineBasicBlock::iterator &MI,
     const MachineOperand &Src = MI->getOperand(1);
 
     unsigned NewOpcode = OpSwiftToX86[Opcode];
-    MachineInstr *NewMI = BuildMI(MF, MI->getDebugLoc(), TII->get(NewOpcode));
-    NewMI->addOperand(Dest);
-      NewMI->addOperand(Src);
+    MachineInstr *NewMI = BuildMI(MF, MI->getDebugLoc(), TII->get(NewOpcode))
+            .add(Dest)
+            .add(Src);
     MBB->insert(MI, NewMI);
     MBB->erase(MI);
 //    DEBUG(dbgs() << "New instruction: "; NewMI->dump());
@@ -147,10 +147,10 @@ bool ReplaceSwiftPass::processInstruction(MachineBasicBlock::iterator &MI,
     const MachineOperand &Src = MI->getOperand(1);
 
     unsigned NewOpcode = OpSwiftToX86[Opcode];
-    MachineInstr *NewMI = BuildMI(MF, MI->getDebugLoc(), TII->get(NewOpcode));
-      NewMI->addOperand(Dest);
-      NewMI->addOperand(Dest);
-      NewMI->addOperand(Src);
+    MachineInstr *NewMI = BuildMI(MF, MI->getDebugLoc(), TII->get(NewOpcode))
+      .add(Dest)
+      .add(Dest)
+      .add(Src);
     MBB->insert(MI, NewMI);
     MBB->erase(MI);
 //    DEBUG(dbgs() << "New instruction: "; NewMI->dump());
@@ -168,11 +168,11 @@ bool ReplaceSwiftPass::processInstruction(MachineBasicBlock::iterator &MI,
     const MachineOperand &Flag = MI->getOperand(3);
 
     unsigned NewOpcode = OpSwiftToX86[Opcode];
-    MachineInstr *NewMI = BuildMI(MF, MI->getDebugLoc(), TII->get(NewOpcode));
-                NewMI->addOperand(Dest);
-                NewMI->addOperand(Src1);
-                NewMI->addOperand(Src2);
-                NewMI->addOperand(Flag);
+    MachineInstr *NewMI = BuildMI(MF, MI->getDebugLoc(), TII->get(NewOpcode))
+                .add(Dest)
+                .add(Src1)
+                .add(Src2)
+                .add(Flag);
     MBB->insert(MI, NewMI);
 
     assert(Dest.isReg() && "Dest operand in SWIFTSUB is not a register!");
@@ -194,10 +194,10 @@ bool ReplaceSwiftPass::processInstruction(MachineBasicBlock::iterator &MI,
     const MachineOperand &Src2 = MI->getOperand(2);
 
     unsigned NewOpcode = OpSwiftToX86[Opcode];
-    MachineInstr *NewMI = BuildMI(MF, MI->getDebugLoc(), TII->get(NewOpcode));
-                NewMI->addOperand(Dest);
-                NewMI->addOperand(Src1);
-                NewMI->addOperand(Src2);
+    MachineInstr *NewMI = BuildMI(MF, MI->getDebugLoc(), TII->get(NewOpcode))
+                .add(Dest)
+                .add(Src1)
+                .add(Src2);
     MBB->insert(MI, NewMI);
     MBB->erase(MI);
 //    DEBUG(dbgs() << "New instruction: "; NewMI->dump());
