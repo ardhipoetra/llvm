@@ -28,7 +28,7 @@ def SWIFTMOV64rr : RI<0, Pseudo, (outs GR64:$dst), (ins GR64:$src),
                       >;
 }
 
-let isCodeGenOnly = 1 in {
+let isCodeGenOnly = 1, Predicates = [UseAVX] in {
 def SWIFTMOVSSrr : SI<0, Pseudo, (outs FR32 :$dst), (ins FR32 :$src),
                      "fswiftmov{ss}\t{$src, $dst|$dst, $src}",
                      [(set FR32:$dst, (int_x86_fmovswift FR32:$src))]>, Sched<[WriteFShuffle]>;
@@ -48,6 +48,15 @@ def SWIFTMOVPDrr : PDI<0, Pseudo, (outs VR128 :$dst), (ins VR128 :$src),
 def SWIFTMOVPSrr : PSI<0, Pseudo, (outs VR128 :$dst), (ins VR128 :$src),
                         "psswiftmov\t{$src, $dst|$dst, $src}",
                         [(set VR128:$dst, (int_x86_psmovswift VR128:$src))]>, Sched<[WriteFShuffle]>;
+
+// 256-bit integers xxx
+def SWIFTMOVvDQrr : PDI<0, Pseudo, (outs VR256 :$dst), (ins VR256 :$src),
+                        "vdqswiftmov\t{$src, $dst|$dst, $src}",
+                        [(set VR256:$dst, (int_x86_vdqmovswift VR256:$src))]>, Sched<[WriteMove]>;
+// 256-bit FP xxx
+def SWIFTMOVvPDrr : PDI<0, Pseudo, (outs VR256 :$dst), (ins VR256 :$src),
+                        "vpdswiftmov\t{$src, $dst|$dst, $src}",
+                        [(set VR256:$dst, (int_x86_vpdmovswift VR256:$src))]>, Sched<[WriteFShuffle]>;
 }
 
 //===----------------------------------------------------------------------===//
@@ -96,6 +105,14 @@ def SWIFTSUBPDrr : PDI<0, Pseudo, (outs VR128:$dst), (ins VR128:$src1, VR128:$sr
 def SWIFTSUBPSrr : PSI<0, Pseudo, (outs VR128:$dst), (ins VR128:$src1, VR128:$src2),
                         "psswiftsub\t{$src2, $dst|$dst, $src2}",
                         [(set VR128:$dst, (int_x86_pssubswift VR128:$src1, VR128:$src2))]>, Sched<[WriteFAdd]>;
+// 256-bit integers xxx
+def SWIFTSUBvDQrr : PDI<0, Pseudo, (outs VR256:$dst), (ins VR256:$src1, VR256:$src2),
+                        "vdqswiftsub\t{$src2, $dst|$dst, $src2}",
+                        [(set VR256:$dst, (int_x86_vdqsubswift VR256:$src1, VR256:$src2))]>, Sched<[WriteVecALU]>;
+// 256-bit FP xxx
+def SWIFTSUBvPDrr : PDI<0, Pseudo, (outs VR256:$dst), (ins VR256:$src1, VR256:$src2),
+                        "vpdswiftsub\t{$src2, $dst|$dst, $src2}",
+                        [(set VR256:$dst, (int_x86_vpdsubswift VR256:$src1, VR256:$src2))]>, Sched<[WriteFAdd]>;
 }
 
 
@@ -148,6 +165,15 @@ def SWIFTNOPSUBPSrr : PSI<0, Pseudo, (outs VR128:$dst), (ins VR128:$src1, VR128:
                         "psswiftnopsub\t{$src2, $dst|$dst, $src2}",
                         [(set VR128:$dst, (int_x86_psnopsubswift VR128:$src1, VR128:$src2))]>, Sched<[WriteFAdd]>;
 
+// 256-bit integers xxx
+def SWIFTNOPSUBvDQrr : PDI<0, Pseudo, (outs VR256:$dst), (ins VR256:$src1, VR256:$src2),
+                        "vdqswiftnopsub\t{$src2, $dst|$dst, $src2}",
+                        [(set VR256:$dst, (int_x86_vdqnopsubswift VR256:$src1, VR256:$src2))]>, Sched<[WriteVecALU]>;
+
+// 256-bit FP xxx
+def SWIFTNOPSUBvPDrr : PDI<0, Pseudo, (outs VR256:$dst), (ins VR256:$src1, VR256:$src2),
+                        "vpdswiftnopsub\t{$src2, $dst|$dst, $src2}",
+                        [(set VR256:$dst, (int_x86_vpdnopsubswift VR256:$src1, VR256:$src2))]>, Sched<[WriteFAdd]>;
 }
 
 class SwiftBinOpRR_F<string mnemonic, X86TypeInfo typeinfo>

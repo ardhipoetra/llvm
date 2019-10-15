@@ -68,6 +68,9 @@ ReplaceSwiftPass::ReplaceSwiftPass()
   OpSwiftToX86[X86::SWIFTMOVPDrr] = X86::MOVAPDrr;
   OpSwiftToX86[X86::SWIFTMOVPSrr] = X86::MOVAPSrr;
 
+  OpSwiftToX86[X86::SWIFTMOVvDQrr] = X86::VMOVDQAYrr;
+  OpSwiftToX86[X86::SWIFTMOVvPDrr] = X86::VMOVAPDYrr;
+
   // subs
   OpSwiftToX86[X86::SWIFTSUB8rr]  = X86::SUB8rr;
   OpSwiftToX86[X86::SWIFTSUB16rr] = X86::SUB16rr;
@@ -80,6 +83,9 @@ ReplaceSwiftPass::ReplaceSwiftPass()
   OpSwiftToX86[X86::SWIFTSUBDQrr] = X86::PSUBBrr;
   OpSwiftToX86[X86::SWIFTSUBPDrr] = X86::SUBPDrr;
   OpSwiftToX86[X86::SWIFTSUBPSrr] = X86::SUBPSrr;
+
+  OpSwiftToX86[X86::SWIFTSUBvDQrr] = X86::VPSUBBrr;
+  OpSwiftToX86[X86::SWIFTSUBvPDrr] = X86::VSUBPDrr;
 
   // cmps
   OpSwiftToX86[X86::SWIFTCMP8rr]  = X86::CMP8rr;
@@ -125,6 +131,8 @@ bool ReplaceSwiftPass::processInstruction(MachineBasicBlock::iterator &MI,
   case X86::SWIFTCMP64rr:
   case X86::SWIFTMOVDQrr:
   case X86::SWIFTMOVPDrr:
+  case X86::SWIFTMOVvDQrr:
+  case X86::SWIFTMOVvPDrr:
   case X86::SWIFTMOVPSrr: {
 //    DEBUG(dbgs() << "Replacing: "; MI->dump());
     const MachineOperand &Dest = MI->getOperand(0);
@@ -187,6 +195,8 @@ bool ReplaceSwiftPass::processInstruction(MachineBasicBlock::iterator &MI,
   case X86::SWIFTSUBSDrr:
   case X86::SWIFTSUBDQrr:
   case X86::SWIFTSUBPDrr:
+  case X86::SWIFTSUBvDQrr:
+  case X86::SWIFTSUBvPDrr:
   case X86::SWIFTSUBPSrr: {
 //    DEBUG(dbgs() << "Replacing: "; MI->dump());
     const MachineOperand &Dest = MI->getOperand(0);
@@ -234,6 +244,8 @@ bool ReplaceSwiftPass::processInstruction(MachineBasicBlock::iterator &MI,
   case X86::SWIFTNOPSUBSDrr:
   case X86::SWIFTNOPSUBDQrr:
   case X86::SWIFTNOPSUBPDrr:
+  case X86::SWIFTNOPSUBvDQrr:
+  case X86::SWIFTNOPSUBvPDrr:
   case X86::SWIFTNOPSUBPSrr: {
 //    DEBUG(dbgs() << "Replacing: "; MI->dump());
 

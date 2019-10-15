@@ -4946,6 +4946,12 @@ let TargetPrefix = "x86" in {
   // packed singles (floats)
   def int_x86_psmovswift : Intrinsic<[llvm_v4f32_ty], [llvm_v4f32_ty],
                                      [IntrNoMem]>;
+  // 256-bit integers
+  def int_x86_vdqmovswift : Intrinsic<[llvm_v4i64_ty], [llvm_v4i64_ty],
+                                     [IntrNoMem]>;
+  // 256-bit fp
+  def int_x86_vpdmovswift : Intrinsic<[llvm_v4f64_ty], [llvm_v4f64_ty],
+                                     [IntrNoMem]>;
 }
 
 // subs
@@ -4973,6 +4979,14 @@ let TargetPrefix = "x86" in {
   // packed singles (floats)
   def int_x86_pssubswift : Intrinsic<[llvm_v4f32_ty],
                                      [llvm_v4f32_ty, llvm_v4f32_ty],
+                                     [IntrNoMem]>;
+  // 256-bit integers
+  def int_x86_vdqsubswift : Intrinsic<[llvm_v4i64_ty],
+                                     [llvm_v4i64_ty, llvm_v4i64_ty],
+                                     [IntrNoMem]>;
+  // 256-bit fp
+  def int_x86_vpdsubswift : Intrinsic<[llvm_v4f64_ty],
+                                     [llvm_v4f64_ty, llvm_v4f64_ty],
                                      [IntrNoMem]>;
 }
 
@@ -5002,4 +5016,12 @@ let TargetPrefix = "x86" in {
   def int_x86_psnopsubswift : Intrinsic<[llvm_v4f32_ty],
                                         [llvm_v4f32_ty, llvm_v4f32_ty],
                                         [IntrNoMem]>;
+  // 256-bit integers
+  def int_x86_vdqnopsubswift : Intrinsic<[llvm_v4i64_ty],
+                                      [llvm_v4i64_ty, llvm_v4i64_ty],
+                                      [IntrNoMem]>;
+  // 256-bit fp
+  def int_x86_vpdnopsubswift : Intrinsic<[llvm_v4f64_ty],
+                                      [llvm_v4f64_ty, llvm_v4f64_ty],
+                                      [IntrNoMem]>;
 }
