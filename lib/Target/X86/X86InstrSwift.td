@@ -28,7 +28,7 @@ def SWIFTMOV64rr : RI<0, Pseudo, (outs GR64:$dst), (ins GR64:$src),
                       >;
 }
 
-let isCodeGenOnly = 1, Predicates = [UseAVX] in {
+let isCodeGenOnly = 1, Predicates = [HasSSE42] in {
 def SWIFTMOVSSrr : SI<0, Pseudo, (outs FR32 :$dst), (ins FR32 :$src),
                      "fswiftmov{ss}\t{$src, $dst|$dst, $src}",
                      [(set FR32:$dst, (int_x86_fmovswift FR32:$src))]>, Sched<[WriteFShuffle]>;
@@ -49,6 +49,9 @@ def SWIFTMOVPSrr : PSI<0, Pseudo, (outs VR128 :$dst), (ins VR128 :$src),
                         "psswiftmov\t{$src, $dst|$dst, $src}",
                         [(set VR128:$dst, (int_x86_psmovswift VR128:$src))]>, Sched<[WriteFShuffle]>;
 
+}
+
+let isCodeGenOnly = 1, Predicates = [HasAVX] in {
 // 256-bit integers xxx
 def SWIFTMOVvDQrr : PDI<0, Pseudo, (outs VR256 :$dst), (ins VR256 :$src),
                         "vdqswiftmov\t{$src, $dst|$dst, $src}",
@@ -84,7 +87,7 @@ def SWIFTSUB64rr : RI<0, Pseudo, (outs GR64:$dst), (ins GR64:$src1, GR64:$src2),
 
 }
 
-let isCompare = 0, Constraints = "$src1 = $dst", isCodeGenOnly = 1 in {
+let isCompare = 0, Constraints = "$src1 = $dst", isCodeGenOnly = 1, Predicates = [HasSSE42] in {
 
 def SWIFTSUBSSrr : SI<0, Pseudo, (outs FR32:$dst), (ins FR32:$src1, FR32:$src2),
                       "fswiftsub{ss}\t{$src2, $dst|$dst, $src2}",
@@ -105,6 +108,9 @@ def SWIFTSUBPDrr : PDI<0, Pseudo, (outs VR128:$dst), (ins VR128:$src1, VR128:$sr
 def SWIFTSUBPSrr : PSI<0, Pseudo, (outs VR128:$dst), (ins VR128:$src1, VR128:$src2),
                         "psswiftsub\t{$src2, $dst|$dst, $src2}",
                         [(set VR128:$dst, (int_x86_pssubswift VR128:$src1, VR128:$src2))]>, Sched<[WriteFAdd]>;
+}
+
+let isCompare = 0, Constraints = "$src1 = $dst", isCodeGenOnly = 1, Predicates = [HasAVX] in {
 // 256-bit integers xxx
 def SWIFTSUBvDQrr : PDI<0, Pseudo, (outs VR256:$dst), (ins VR256:$src1, VR256:$src2),
                         "vdqswiftsub\t{$src2, $dst|$dst, $src2}",
@@ -165,6 +171,9 @@ def SWIFTNOPSUBPSrr : PSI<0, Pseudo, (outs VR128:$dst), (ins VR128:$src1, VR128:
                         "psswiftnopsub\t{$src2, $dst|$dst, $src2}",
                         [(set VR128:$dst, (int_x86_psnopsubswift VR128:$src1, VR128:$src2))]>, Sched<[WriteFAdd]>;
 
+}
+
+let isCompare = 0, Constraints = "$src1 = $dst", isCodeGenOnly = 1, Predicates = [HasAVX] in {
 // 256-bit integers xxx
 def SWIFTNOPSUBvDQrr : PDI<0, Pseudo, (outs VR256:$dst), (ins VR256:$src1, VR256:$src2),
                         "vdqswiftnopsub\t{$src2, $dst|$dst, $src2}",
