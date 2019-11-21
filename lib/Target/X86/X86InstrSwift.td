@@ -28,7 +28,7 @@ def SWIFTMOV64rr : RI<0, Pseudo, (outs GR64:$dst), (ins GR64:$src),
                       >;
 }
 
-let isCodeGenOnly = 1, Predicates = [HasSSE42] in {
+let isCodeGenOnly = 1, Predicates = [HasSSE1] in {
 def SWIFTMOVSSrr : SI<0, Pseudo, (outs FR32 :$dst), (ins FR32 :$src),
                      "fswiftmov{ss}\t{$src, $dst|$dst, $src}",
                      [(set FR32:$dst, (int_x86_fmovswift FR32:$src))]>, Sched<[WriteFShuffle]>;
@@ -87,7 +87,7 @@ def SWIFTSUB64rr : RI<0, Pseudo, (outs GR64:$dst), (ins GR64:$src1, GR64:$src2),
 
 }
 
-let isCompare = 0, Constraints = "$src1 = $dst", isCodeGenOnly = 1, Predicates = [HasSSE42] in {
+let isCompare = 0, Constraints = "$src1 = $dst", isCodeGenOnly = 1, Predicates = [HasSSE1] in {
 
 def SWIFTSUBSSrr : SI<0, Pseudo, (outs FR32:$dst), (ins FR32:$src1, FR32:$src2),
                       "fswiftsub{ss}\t{$src2, $dst|$dst, $src2}",
