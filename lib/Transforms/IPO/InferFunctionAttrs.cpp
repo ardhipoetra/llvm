@@ -844,31 +844,6 @@ static bool inferPrototypeAttributes(Function &F,
     Changed |= setOnlyReadsMemory(F, 1);
     Changed |= setOnlyReadsMemory(F, 2);
     return Changed;
-  case LibFunc::fopen64:
-    if (FTy->getNumParams() != 2 || !FTy->getReturnType()->isPointerTy() ||
-        !FTy->getParamType(0)->isPointerTy() ||
-        !FTy->getParamType(1)->isPointerTy())
-      return false;
-    Changed |= setDoesNotThrow(F);
-    Changed |= setDoesNotAlias(F, 0);
-    Changed |= setDoesNotCapture(F, 1);
-    Changed |= setDoesNotCapture(F, 2);
-    Changed |= setOnlyReadsMemory(F, 1);
-    Changed |= setOnlyReadsMemory(F, 2);
-    return Changed;
-  case LibFunc::fseeko64:
-  case LibFunc::ftello64:
-    if (FTy->getNumParams() == 0 || !FTy->getParamType(0)->isPointerTy())
-      return false;
-    Changed |= setDoesNotThrow(F);
-    Changed |= setDoesNotCapture(F, 1);
-    return Changed;
-  case LibFunc::tmpfile64:
-    if (!FTy->getReturnType()->isPointerTy())
-      return false;
-    Changed |= setDoesNotThrow(F);
-    Changed |= setDoesNotAlias(F, 0);
-    return Changed;
   case LibFunc::fstat64:
   case LibFunc::fstatvfs64:
     if (FTy->getNumParams() != 2 || !FTy->getParamType(1)->isPointerTy())
